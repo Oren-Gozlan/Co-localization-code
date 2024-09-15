@@ -9,6 +9,8 @@ import random
 
 
 
+# This function gets paths of two channels from the same image, i this case red and blue, feel free to change. 
+# It creates a mask based on a threshold you choose for each channel, change threshold as need.
 def process_images(red_image_path, blue_image_path, red_percentage, blue_percentage):
     red_image = imageio.imread(red_image_path)
     blue_image = imageio.imread(blue_image_path)
@@ -25,6 +27,7 @@ def process_images(red_image_path, blue_image_path, red_percentage, blue_percent
 
     return red_mask, blue_mask, blue_red_mask
 
+# Calculate the ratio between one mask and the combination of the two masks, feel fre to change which mask is divided by which as needed. 
 def calculate_pixel_ratio(red_mask, blue_red_mask):
     total_red_pixels = np.sum(red_mask)
     blue_and_red_pixels = np.sum(blue_red_mask)
@@ -32,7 +35,7 @@ def calculate_pixel_ratio(red_mask, blue_red_mask):
     return ratio
 
 # Insert your main folder path and desired thresholds for each color:
-main_folder = r"D:\DavidS14\Desktop\נורולייזד תמונות\Three days dll4 only all new repeats"
+main_folder = "Insert you main file location"
 red_percentage = 95
 blue_percentage = 85
 
@@ -59,6 +62,7 @@ for folder_name in folder_names:
                 ratios = []
                 
                 # Iterate over image pairs in the subfolder (Change "C1-" to your relevant name)
+                # This is how the code knows to pair the channels that come from the same image.
                 red_files = [f for f in os.listdir(subfolder_path) if f.startswith("C1-")]
                 for red_file in red_files:
                     blue_file = re.sub(r'^C1-', 'C2-', red_file)
@@ -110,10 +114,12 @@ for i, bar in enumerate(bars):
                 markeredgecolor="none",
                 linestyle='None')
 
+# Name Y and X axis 
 ax.set_ylabel('Y label', fontsize=15)
 ax.set_xticks(bar_offsets)
 ax.set_xticklabels(folder_names, rotation=20, ha='right', fontsize=15)
 
+# Save the figure, change name as needed
 plt.tight_layout()
 plt.savefig("Change name as needed")
 plt.show()
@@ -121,8 +127,6 @@ plt.show()
 # Create a DataFrame from the list of ratios
 df = pd.DataFrame(all_ratios, columns=['Main Folder', 'Subfolder', 'Image File', 'Pixel Ratio'])
 
-# Display the DataFrame
-# print(df)
 
 # Export DataFrame to Excel
 excel_filename = 'Change neame as needed.xlsx'  
